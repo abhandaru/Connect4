@@ -3,22 +3,29 @@
 // Adu Bhandaru
 //
 
+var connect = require('connect-assets');
 var express = require('express');
 var http = require('http');
 
-var server = http.createServer(app);
 var app = express();
-var io = require('socket.io').listen(server);
+var server = http.createServer(app);
+var io = require('socket.io').listen(server, {log: false});
 
-app.listen(80);
-
-app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+// config
+server.listen(3000);
+app.configure(function(){
+  app.use(connect());
+  app.use(express.static(__dirname + '/static'));
+  app.use(express.static(__dirname + '/assets'));
 });
 
+// set up sockets
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+  var count = 0;
+  setInterval(function() {
+    socket.emit('news', { hello: ++count });
+  }, 1000);
   socket.on('my other event', function (data) {
-    console.log(data);
+    console.log('>>>', data);
   });
 });

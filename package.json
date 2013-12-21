@@ -1,0 +1,13 @@
+{
+  "name": "connect4",
+  "description": "Simple Connect 4 app.",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "connect-assets": "2.x",
+    "express": "3.x",
+    "jade": "*",
+    "socket.io": "*",
+    "stylus": "*"
+  }
+}

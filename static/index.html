@@ -1,0 +1,31 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/connect4.css" />
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="js/three.min.js"></script>
+  <script type="text/javascript" src="https://rawgithub.com/abhandaru/Game3/master/build/game3.min.js"></script>
+  <!-- connect 4 source -->
+  <script type="text/javascript" src="js/Connect4.js"></script>
+  <script type="text/javascript" src="js/Board.js"></script>
+  <script type="text/javascript" src="js/Game.js"></script>
+  <!-- socket IO stuff -->
+  <script type="text/javascript" >
+var socket = io.connect('http://localhost');
+socket.on('news', function (data) {
+  console.log(data);
+  socket.emit('my other event', { my: data });
+});
+  </script>
+</head>
+<body>
+  <div id="connect4"></div>
+  <script type="text/javascript">
+(function() {
+  // entry point
+  var el = document.getElementById('connect4');
+  var game = new Connect4.Game(el);
+  console.log(game);
+})();
+  </script>
+</body>
+</html>

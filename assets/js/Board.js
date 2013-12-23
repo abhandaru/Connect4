@@ -26,7 +26,7 @@ Connect4.Board = Game3.Model.extend({
     this.pause = !this.pause;
   },
 
-  timerfired: function() {
+  update: function() {
     if (this.pause) return;
     this.geo.rotation.x += 0.01;
     this.geo.rotation.y += 0.02;

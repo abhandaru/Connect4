@@ -24,7 +24,7 @@ io.sockets.on('connection', function (socket) {
   var count = 0;
   setInterval(function() {
     socket.emit('news', { hello: ++count });
-  }, 1000);
+  }, 10000);
   socket.on('my other event', function (data) {
     console.log('>>>', data);
   });

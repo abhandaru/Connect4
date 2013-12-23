@@ -1,7 +1,8 @@
 Connect4.Game = Game3.Game.extend({
   init: function(el) {
     // orbit controls
-    this.controls = new THREE.OrbitControls(this.camera, this.el);
+    this.controls = new THREE.TrackballControls(this.camera, this.el);
+    this.controls.autoRotate = true;
 
     // lights
     this.light = new Game3.Light(0xFFFFFF, new THREE.Vector3(400, 300, -400));
@@ -12,8 +13,8 @@ Connect4.Game = Game3.Game.extend({
     // this.add(this.board);
   },
 
-  timerfired: function(dt) {
-    // this.controls.update();
-    this.board.timerfired(dt);
+  update: function(dt) {
+    this.controls.update();
+    this.board.update(dt);
   }
 });

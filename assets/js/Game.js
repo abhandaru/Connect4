@@ -10,7 +10,7 @@ Connect4.Game = Game3.Game.extend({
 
     // set up the board
     this.board = new Connect4.Board(this);
-    // this.add(this.board);
+    this.add(this.board);
   },
 
   update: function(dt) {

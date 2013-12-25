@@ -1,14 +1,6 @@
 Connect4.Board = Game3.Model.extend({
-  init: function(game) {
-    // set up geometry
-    this.pause = false;
-    this.geo = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(200, 1),
-        new THREE.MeshNormalMaterial());
-    // set object
-    this.interactive = true;
-    this.mesh(this.geo);
 
+  init: function(game) {
     // create slots
     this.slots = [ ];
     for (var i = 0; i < Connect4.ROWS; i++) {
@@ -22,13 +14,10 @@ Connect4.Board = Game3.Model.extend({
     }
   },
 
-  click: function(event) {
-    this.pause = !this.pause;
-  },
-
-  update: function() {
-    if (this.pause) return;
-    this.geo.rotation.x += 0.01;
-    this.geo.rotation.y += 0.02;
+  update: function(dt) {
+    // if (this.pause) return;
+    // this.geo.rotation.x += 0.01;
+    // this.geo.rotation.y += 0.02;
   }
+
 });

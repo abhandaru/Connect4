@@ -4,6 +4,7 @@ Connect4.Slot = Game3.Model.extend({
     this.row = row;
     this.col = col;
     this.thickness = 3;
+    this.pieces = [ ];
 
     // determine position
     var offset = new THREE.Vector3(
@@ -23,6 +24,20 @@ Connect4.Slot = Game3.Model.extend({
     // set the mesh
     this.interactive = true;
     this.mesh(this.base);
+  },
+
+  move: function(player) {
+    if (this.pieces.length >= Connect4.HEIGHT) return false;
+    // this is a valid move
+    var piece = new Connect4.Piece(
+        this, player, this.row, this.col, this.pieces.length);
+    this.add(piece);
+    this.pieces.push(piece);
+    return true;
+  },
+
+  click: function(event) {
+    this.game.move(this.row, this.col);
   },
 
   mouseover: function(event) {

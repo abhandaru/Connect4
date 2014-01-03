@@ -12,12 +12,6 @@ Connect4.Board = Game3.Model.extend({
       }
       this.slots.push(row);
     }
-  },
-
-  update: function(dt) {
-    // if (this.pause) return;
-    // this.geo.rotation.x += 0.01;
-    // this.geo.rotation.y += 0.02;
   }
 
 });

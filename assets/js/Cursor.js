@@ -4,11 +4,11 @@ Connect4.Cursor = Game3.Model.extend({
     this.row = -1;
     this.col = -1;
     this.radius = Connect4.SIZE/2;
-    this.height = 400;
+    this.height = 10;
 
     // set up the cursor mesh
-    this.material = new THREE.MeshLambertMaterial(
-      {transparent: true, opacity: 0.5});
+    this.material = new THREE.MeshLambertMaterial({
+        transparent: true, opacity: 0.5});
     this.column = new THREE.Mesh(
         new THREE.CylinderGeometry(
           this.radius, this.radius, this.height, 40), this.material);

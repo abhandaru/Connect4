@@ -7,18 +7,12 @@
   <script type="text/javascript" src="https://rawgithub.com/abhandaru/Game3/master/build/game3.js"></script>
   <!-- connect 4 source -->
   <script type="text/javascript" src="js/Connect4.js"></script>
+  <script type="text/javascript" src="js/Piece.js"></script>
   <script type="text/javascript" src="js/Slot.js"></script>
   <script type="text/javascript" src="js/Cursor.js"></script>
   <script type="text/javascript" src="js/Board.js"></script>
+  <script type="text/javascript" src="js/Player.js"></script>
   <script type="text/javascript" src="js/Game.js"></script>
-  <!-- socket IO stuff -->
-  <script type="text/javascript" >
-var socket = io.connect('http://localhost');
-socket.on('news', function (data) {
-  console.log(data);
-  socket.emit('my other event', { my: data });
-});
-  </script>
 </head>
 <body>
   <div id="connect4"></div>

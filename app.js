@@ -19,13 +19,10 @@ app.configure(function(){
   app.use(express.static(__dirname + '/assets'));
 });
 
-// set up sockets
-io.sockets.on('connection', function (socket) {
-  var count = 0;
-  setInterval(function() {
-    socket.emit('news', { hello: ++count });
-  }, 10000);
-  socket.on('my other event', function (data) {
-    console.log('>>>', data);
-  });
+// set up connections
+var players = [ ];
+io.sockets.on('connection', function(socket) {
+  var player = { id: players.length };
+  socket.emit('player', player);
+  players.push(player);
 });

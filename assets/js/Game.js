@@ -17,21 +17,37 @@ Connect4.Game = Game3.Game.extend({
     this.cursor = new Connect4.Cursor(this);
     this.add(this.cursor);
 
-    // player sockets
+    // set up sockets
     var _this = this;
-    this.players = [ ];
     this.socket = io.connect('http://localhost');
+
+    // set up players
+    this.players = [ ];
+    this.socket.on('user', function(user) {
+      var player = new Connect4.Player(_this, user);
+      _this.user = player;
+      _this.players.push(player);
+      _this.add(player);
+    });
     this.socket.on('player', function(player) {
       var player = new Connect4.Player(_this, player);
-      _this.add(player);
       _this.players.push(player);
-      //
-      if (_this.players.length) _this.next();
-    });
+      _this.add(player);
+    })
 
     // turn management
+    this.started = false;
     this.turns = 0;
+    this.socket.on('start', function(data) {
+      _this.start();
+    });
   },
+
+  start: function() {
+    _this.players.sort(Connect4.Player.compare); // get total ordering
+    _this.started = true;
+    _this.next();
+  }
 
   next: function() {
     this.current = this.players[this.turns % this.players.length];
@@ -40,7 +56,11 @@ Connect4.Game = Game3.Game.extend({
 
   move: function(row, col) {
     // players have not arrived yet
-    if (!this.turns) return;
+    if (!this.started) return;
+    // not this players move
+    if (this.user.id != this.current.id) return;
+
+    // general case
     var player = this.current;
     var valid = this.board.slots[row][col].move(player);
     if (valid)

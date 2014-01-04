@@ -1,4 +1,4 @@
-Connect4.Player = Game3.Model.extend({
+Connect4.Player = Game3.Class.extend({
 
   init: function(game, data) {
     this.id = data.id;
@@ -8,6 +8,7 @@ Connect4.Player = Game3.Model.extend({
     var colors = [ 0x0000FF, 0xFF0000 ];
     var index = this.order % colors.length;
     this.color = colors[index];
+    console.log(this);
   }
 
 });

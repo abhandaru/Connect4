@@ -41,13 +41,26 @@ Connect4.Game = Game3.Game.extend({
     this.socket.on('start', function(data) {
       _this.start();
     });
+
+    // receiving moves
+    this.socket.on('move', function(move) {
+      console.log('[info] received move', move);
+      var player;
+      for (var i = 0; i < this.players.length; i++) {
+        var test = this.players[i];
+        if (test.id == move.player_id)
+          player = test;
+      }
+      this.board.slots[move.row][move.col].move(player);
+      this.next();
+    }.bind(this));
   },
 
   start: function() {
-    _this.players.sort(Connect4.Player.compare); // get total ordering
-    _this.started = true;
-    _this.next();
-  }
+    this.players.sort(Connect4.Player.compare); // get total ordering
+    this.started = true;
+    this.next();
+  },
 
   next: function() {
     this.current = this.players[this.turns % this.players.length];
@@ -63,8 +76,10 @@ Connect4.Game = Game3.Game.extend({
     // general case
     var player = this.current;
     var valid = this.board.slots[row][col].move(player);
-    if (valid)
+    if (valid) {
+      this.socket.emit('move', { player_id: player.id, row: row, col: col });
       this.next();
+    }
     else
       console.log('[invalid] move invalid.');
   },

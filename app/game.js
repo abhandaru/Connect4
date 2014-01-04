@@ -2,6 +2,12 @@
 var game = { };
 module.exports = exports = game;
 
+//
+// Static configuration
+//
+
+game.MAX_PLAYERS = 2;
+
 
 //
 // Constructor
@@ -11,13 +17,6 @@ game.Game = function(id) {
   this.id = id;
   this.players = [ ];
 };
-
-
-//
-// Static configuration
-//
-
-game.Game.MAX_PLAYERS = 2;
 
 
 //

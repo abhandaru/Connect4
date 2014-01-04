@@ -27,12 +27,13 @@ var games = [ ];
 io.sockets.on('connection', function(socket) {
   // create user object
   var me = { id: socket.id, order: users.length, socket: socket };
+  var clientUser = { id: me.id, order: me.order };
+  console.log('[info] connection', clientUser);
 
   // report user to clients
-  var clientUser = { id: me.id, order: me.order };
   socket.emit('user', clientUser);
   users.forEach(function(user) {
-    socket.emit('player', { id: user.id });
+    socket.emit('player', { id: user.id, order: user.order });
     user.socket.emit('player', clientUser);
   });
 
@@ -40,15 +41,20 @@ io.sockets.on('connection', function(socket) {
   users.push(me);
 
   // start the game if we have enough players
-  if (users.length > 1) {
-    console.log('[info] start game', users);
+  if (users.length >= game.MAX_PLAYERS) {
+    console.log('[info] start game');
     users.forEach(function(user) {
       user.socket.emit('start');
     });
   }
 
-  // send moves out
+  // broadcast the move
   socket.on('move', function (move) {
-    console.log(move);
+    console.log('[info] received move', move);
+    users.forEach(function(user) {
+      if (user === me) return;
+      user.socket.emit('move', move);
+    });
   });
+
 });

@@ -6,8 +6,10 @@ Connect4.Game = Game3.Game.extend({
     this.controls.autoRotate = true;
 
     // lights
-    this.light = new Game3.Light(0xFFFFFF, new THREE.Vector3(400, 300, -400));
-    this.add(this.light);
+    this.lightA = new Game3.Light(0xBBBBBB, new THREE.Vector3(400, 300, -400));
+    this.lightB = new Game3.Light(0xBBBBBB, new THREE.Vector3(-400, 300, 400));
+    this.add(this.lightA);
+    this.add(this.lightB);
 
     // set up the board
     this.board = new Connect4.Board(this);
@@ -19,7 +21,7 @@ Connect4.Game = Game3.Game.extend({
 
     // set up sockets
     var _this = this;
-    this.socket = io.connect('http://localhost');
+    this.socket = io.connect('http://' + Connect4.IP);
 
     // set up players
     this.players = [ ];
@@ -59,12 +61,14 @@ Connect4.Game = Game3.Game.extend({
   start: function() {
     this.players.sort(Connect4.Player.compare); // get total ordering
     this.started = true;
-    this.next();
+    this.current = this.players[this.turns % this.players.length];
+    console.log('[info] start game');
   },
 
   next: function() {
     this.current = this.players[this.turns % this.players.length];
     this.turns++;
+    console.log('[info] next turn', this.current);
   },
 
   move: function(row, col) {

@@ -6,7 +6,7 @@ module.exports = exports = game;
 // Static configuration
 //
 
-game.MAX_PLAYERS = 2;
+game.MAX_PLAYERS = 1;
 
 
 //

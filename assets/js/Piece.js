@@ -4,9 +4,9 @@ Connect4.Piece = Game3.Model.extend({
     this.playerId = player.id;
     this.color = player.color;
 
-    var radius = Connect4.SIZE/2 * 0.8;
+    var radius = Connect4.SIZE/2;
     var mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius),
+        new THREE.SphereGeometry(radius, 40, 40),
         new THREE.MeshLambertMaterial({ color: this.color }));
     mesh.position = this._getPosition(row, col, height);
 

@@ -1,3 +1,6 @@
+var util = require('./util');
+
+
 // export the lib
 var game = { };
 module.exports = exports = game;
@@ -15,7 +18,7 @@ game.MAX_PLAYERS = 2;
 
 game.Game = function(id) {
   this.id = id;
-  this.players = [ ];
+  this.players = new util.Map();
 };
 
 
@@ -25,11 +28,20 @@ game.Game = function(id) {
 
 game.Game.prototype = {
 
+  open: function() {
+    return (this.players.size() < game.MAX_PLAYERS);
+  },
+
+
+  full: function() {
+    return !this.open();
+  },
+
+
   add: function(player) {
-    if (this.players.length >= game.Game.MAX_PLAYERS)
-      return false;
+    if (!this.open()) return false;
     // safe to add player
-    this.players.push(player);
+    this.players.put(player.id, player);
     return true;
   }
 

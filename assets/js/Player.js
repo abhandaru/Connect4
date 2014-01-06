@@ -8,7 +8,6 @@ Connect4.Player = Game3.Class.extend({
     var colors = [ 0x0000FF, 0xFF0000, 0x00FF00 ];
     var index = this.order % colors.length;
     this.color = colors[index];
-    console.log(this);
   }
 
 });

@@ -26,11 +26,13 @@ Connect4.Game = Game3.Game.extend({
       _this.user = player;
       _this.players.push(player);
       _this.add(player);
+      console.log('[info] self', player);
     });
     this.socket.on('player', function(player) {
       var player = new Connect4.Player(_this, player);
       _this.players.push(player);
       _this.add(player);
+      console.log('[info] player connected', player);
     })
 
     // turn management
@@ -58,12 +60,12 @@ Connect4.Game = Game3.Game.extend({
     this.players.sort(Connect4.Player.compare); // get total ordering
     this.started = true;
     this.current = this.players[this.turns % this.players.length];
-    console.log('[info] start game');
+    console.log('[info] start game', this.current);
   },
 
   next: function() {
-    this.current = this.players[this.turns % this.players.length];
     this.turns++;
+    this.current = this.players[this.turns % this.players.length];
     console.log('[info] next turn', this.current);
   },
 

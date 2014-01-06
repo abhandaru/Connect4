@@ -6,7 +6,7 @@ module.exports = exports = game;
 // Static configuration
 //
 
-game.MAX_PLAYERS = 1;
+game.MAX_PLAYERS = 2;
 
 
 //
@@ -34,4 +34,3 @@ game.Game.prototype = {
   }
 
 };
-

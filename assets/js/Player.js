@@ -13,6 +13,7 @@ Connect4.Player = Game3.Class.extend({
 
 });
 
+
 //
 // Static functions
 //

@@ -1,10 +1,6 @@
 Connect4.Game = Game3.Game.extend({
 
   init: function(el) {
-    // orbit controls
-    this.controls = new THREE.TrackballControls(this.camera, this.el);
-    this.controls.autoRotate = true;
-
     // lights
     this.lightA = new Game3.Light(0xBBBBBB, new THREE.Vector3(400, 300, -400));
     this.lightB = new Game3.Light(0xBBBBBB, new THREE.Vector3(-400, 300, 400));
@@ -92,9 +88,7 @@ Connect4.Game = Game3.Game.extend({
   // Event handlers
   //
 
-  update: function(dt) {
-    this.controls.update();
-  },
+  update: function(dt) {  },
 
   mouseover: function(event) {
     this.cursor.hide();

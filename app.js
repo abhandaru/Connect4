@@ -49,19 +49,20 @@ io.sockets.on('connection', function(socket) {
     games.put(game.id, game);
   }
   game.add(me);
+  me.game = game;
 
   // report user to clients
   socket.emit('user', me.json());
-  game.players.forEach(function(id, user) {
+  me.game.players.forEach(function(id, user) {
     if (me.id === user.id) return;
     socket.emit('player', { id: user.id, order: user.order });
     user.socket.emit('player', me.json());
   });
 
   // start the game if we have enough players
-  if (game.full()) {
+  if (me.game.full()) {
     console.log('[info] start game');
-    game.players.forEach(function(id, user) {
+    me.game.players.forEach(function(id, user) {
       user.socket.emit('start');
     });
   }
@@ -69,7 +70,7 @@ io.sockets.on('connection', function(socket) {
   // broadcast the move
   socket.on('move', function (move) {
     console.log('[info] received move', move);
-    users.forEach(function(id, user) {
+    me.game.players.forEach(function(id, user) {
       if (me.id === user.id) return;
       user.socket.emit('move', move);
     });
@@ -79,7 +80,7 @@ io.sockets.on('connection', function(socket) {
   socket.on('disconnect', function() {
     console.log('[info] user disconnected', me.json());
     users.remove(me.id);
-    users.forEach(function(id, user) {
+    me.game.players.forEach(function(id, user) {
       user.socket.emit('disconnect', me.json());
     });
   });

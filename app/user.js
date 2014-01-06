@@ -11,7 +11,7 @@ user.User = function(id, order, socket) {
   this.id = id;
   this.order = order;
   this.socket = socket;
-  this._game = null;
+  this.game = null;
 };
 
 
@@ -20,12 +20,6 @@ user.User = function(id, order, socket) {
 //
 
 user.User.prototype = {
-
-  game: function(game) {
-    if (game === undefined)
-      return this._game;
-    this._game = game;
-  },
 
   json: function() {
     return {

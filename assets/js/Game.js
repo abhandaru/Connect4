@@ -79,7 +79,9 @@ Connect4.Game = Game3.Game.extend({
       }
       // notify the client
       this.logger.warn('Opponent disconnected', player.name());
-      // did the game end?
+      // has the game already ended?
+      if (this.ended) return;
+      // did the game just end?
       if (data.winner) {
         this.ended = true;
         if (data.winner.id === this.user.id)
@@ -125,7 +127,7 @@ Connect4.Game = Game3.Game.extend({
     var player = this.current;
     var valid = this.board.slots[row][col].move(player);
     if (valid) {
-      this.logger.info('Player move', player.name(), '@', row, col);
+      this.logger.info('Your move', player.name(), '@', row, col);
       // see if the game has ended
       this.ended = this.board.isWinner(this.current);
       this.socket.emit('move', { player_id: player.id, row: row, col: col, win: this.ended });

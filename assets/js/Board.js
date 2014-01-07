@@ -1,6 +1,22 @@
 Connect4.Board = Game3.Model.extend({
 
   init: function(game) {
+    // track check functions
+    this.checks = [
+      this._checkRow,
+      this._checkCol,
+      this._checkVertical,
+      this._checkPosDiag,
+      this._checkNegDiag,
+      this._checkYZPosDiag,
+      this._checkYZNegDiag,
+      this._checkXYPosDiag,
+      this._checkXYNegDiag,
+      this._checkXYZPosDiag,
+      this._checkXYZNegDiag,
+      this._checkNegXYZPosDiag,
+      this._checkNegXYZNegDiag
+    ];
     // create slots
     this.slots = [ ];
     for (var i = 0; i < Connect4.ROWS; i++) {
@@ -13,6 +29,12 @@ Connect4.Board = Game3.Model.extend({
       this.slots.push(row);
     }
   },
+
+  //
+  // Win check.
+  // TODO: This could obviously be done more efficiently, but we will save
+  //   the optimizations for later.
+  //
 
   isWinner: function(player) {
     for (var row = 0; row < this.slots.length; row++) {
@@ -27,20 +49,154 @@ Connect4.Board = Game3.Model.extend({
   },
 
   _check: function(player, row, col, plane) {
-    // check the column
-    if (this._checkCol(player, row, col, plane))
-      return true;
+    var args = [player, row, col, plane];
+    for (var i = 0; i < this.checks.length; i++) {
+      if (this.checks[i].apply(this, args))
+        return true;
+    }
+    return false;
   },
 
-  _checkCol: function(player, row, col, plane) {
-    var goal = Connect4.GOAL;
-    for (var i = row; i < row + goal; i++) {
-      var piece = this._get(i, col, plane);
+  //
+  // XZ plane
+  //
+
+  _checkRow: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row, col + i, plane);
       if (!piece || !piece.owner.is(player))
         return false;
     }
     return true;
   },
+
+  _checkCol: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col, plane);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  _checkPosDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col + i, plane);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  _checkNegDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col - i, plane);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  //
+  // YZ plane
+  //
+
+  _checkVertical: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row, col, plane + i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  _checkYZPosDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col, plane + i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  _checkYZNegDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col, plane - i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  //
+  // XY Plane
+  //
+
+  _checkXYPosDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row, col + i, plane + i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  _checkXYNegDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row, col + i, plane - i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  //
+  // Positive diagonal plane
+  //
+
+  _checkXYZPosDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col + i, plane + i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  _checkXYZNegDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col + i, plane - i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  //
+  // Positive diagonal plane
+  //
+
+  _checkNegXYZPosDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col - i, plane + i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  _checkNegXYZNegDiag: function(player, row, col, plane) {
+    for (var i = 0; i < Connect4.GOAL; i++) {
+      var piece = this._get(row + i, col - i, plane - i);
+      if (!piece || !piece.owner.is(player))
+        return false;
+    }
+    return true;
+  },
+
+  //
+  // Helpers
+  //
 
   _get: function(row, col, plane) {
     // get the slot

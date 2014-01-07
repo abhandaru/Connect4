@@ -5,6 +5,7 @@ var util = require('./util');
 var game = { };
 module.exports = exports = game;
 
+
 //
 // Static configuration
 //
@@ -19,6 +20,7 @@ game.MAX_PLAYERS = 2;
 game.Game = function(id) {
   this.id = id;
   this.players = new util.Map();
+  this.ended = false;
 };
 
 
@@ -29,14 +31,13 @@ game.Game = function(id) {
 game.Game.prototype = {
 
   open: function() {
-    return (this.players.size() < game.MAX_PLAYERS);
+    return !this.ended && (this.players.size() < game.MAX_PLAYERS);
   },
 
 
-  full: function() {
+  closed: function() {
     return !this.open();
   },
-
 
   add: function(player) {
     if (!this.open()) return false;

@@ -60,7 +60,7 @@ io.sockets.on('connection', function(socket) {
   });
 
   // start the game if we have enough players
-  if (me.game.full()) {
+  if (me.game.closed()) {
     console.log('[info] start game');
     me.game.players.forEach(function(id, user) {
       user.socket.emit('start');
@@ -81,8 +81,13 @@ io.sockets.on('connection', function(socket) {
     console.log('[info] user disconnected', me.json());
     users.remove(me.id);
     me.game.players.remove(me.id);
+    // end game logic
+    var data = { user: me.json() };
+    me.game.ended = me.game.players.size() <= 1;
     me.game.players.forEach(function(id, user) {
-      user.socket.emit('disconnect', me.json());
+      if (me.game.ended)
+        data.winner = user.json();
+      user.socket.emit('disconnect', data);
     });
   });
 

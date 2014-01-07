@@ -2,7 +2,7 @@
 var Connect4 = { };
 
 // system
-Connect4.DEBUG = true;
+Connect4.DEBUG = false;
 Connect4.IP = (Connect4.DEBUG) ? 'localhost' : '192.168.1.137';
 
 // config

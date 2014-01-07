@@ -16,7 +16,7 @@ body {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  width: 350px;
+  width: 300px;
   font-family: Arial, Helvetica, Sans-Serif;
   font-size: 13px;
   /*overflow: auto;*/
@@ -24,8 +24,23 @@ body {
 
 #connect4 .logger .message {
   padding: 2px 10px;
+  color: #333;
 }
 
 #connect4 .logger .message.info:before {
-  content: '[info] ';
+  content: 'info ';
+  color: #008FF5;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#connect4 .logger .message.warn:before {
+  content: 'warn ';
+  color: #FFA200;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#connect4 .logger .message.gogo:before {
+  content: 'impt ';
+  color: #00BA06;
+  font-family: "Courier New", Courier, monospace;
 }

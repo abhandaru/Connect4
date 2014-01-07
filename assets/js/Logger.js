@@ -7,8 +7,18 @@ Connect4.Logger = Game3.Class.extend({
     this.el = el;
   },
 
+  gogo: function() {
+    var line = this._line(arguments, 'gogo');
+    this._add(line);
+  },
+
   info: function() {
     var line = this._line(arguments, 'info');
+    this._add(line);
+  },
+
+  warn: function() {
+    var line = this._line(arguments, 'warn');
     this._add(line);
   },
 

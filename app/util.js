@@ -26,7 +26,8 @@ util.Map.prototype = {
 
   get: function(key) {
     var hash = this._hash(key);
-    return this._data[hash][1];
+    var pair = this._data[hash];
+    return pair && pair[1];
   },
 
 

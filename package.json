@@ -9,5 +9,29 @@
     "jade": "*",
     "socket.io": "*",
     "stylus": "*"
+  },
+  "main": "app.js",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abhandaru/Connect4.git"
+  },
+  "keywords": [
+    "THREE.js",
+    "Game3.js",
+    "Socket.io",
+    "Node.js",
+    "Connect4"
+  ],
+  "author": "Adu Bhandaru",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abhandaru/Connect4/issues"
   }
 }

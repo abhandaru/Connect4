@@ -9,7 +9,8 @@ var connect = require('connect-assets'),
     http = require('http'),
     socketio = require('socket.io');
 
-var Game = require('./app/game').Game,
+var config = require('./app/config'),
+    Game = require('./app/game').Game,
     User = require('./app/user').User,
     util = require('./app/util');
 
@@ -19,9 +20,10 @@ var app = express();
 var server = http.createServer(app);
 var io = socketio.listen(server, {log: false});
 
+console.log('[info] starting', config.production, config.port);
 
 // app config
-server.listen(3000);
+server.listen(config.port);
 app.configure(function() {
   app.use(connect());
   app.use(express.static(__dirname + '/static'));

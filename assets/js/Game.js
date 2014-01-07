@@ -21,12 +21,12 @@ Connect4.Game = Game3.Game.extend({
 
     // set up sockets
     var _this = this;
-    this.socket = io.connect('http://' + Connect4.IP);
+    this.socket = io.connect(Connect4.HOST);
 
     // set up players
     this.players = [ ];
     this.socket.on('user', function(user) {
-      var player = new Connect4.Player(_this, user);
+      var player = new Connect4.Player(this, user);
       this.user = player;
       this.players.push(player);
       this.logger.info('Self', player.name());

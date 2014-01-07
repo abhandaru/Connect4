@@ -36,12 +36,17 @@ Connect4.Slot = Game3.Model.extend({
     return true;
   },
 
+
+  //
+  // Event handlers
+  //
+
   click: function(event) {
     this.game.move(this.row, this.col);
   },
 
   mouseover: function(event) {
-    this.game.cursor.show(this.row, this.col);
+    this.game.cursor.show(this.row, this.col, this.pieces.length);
   }
 
 });

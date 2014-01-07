@@ -54,7 +54,7 @@ io.sockets.on('connection', function(socket) {
   // report user to clients
   socket.emit('user', me.json());
   me.game.players.forEach(function(id, user) {
-    if (me.id === user.id) return;
+    if (user.is(me)) return;
     socket.emit('player', { id: user.id, order: user.order });
     user.socket.emit('player', me.json());
   });
@@ -71,7 +71,7 @@ io.sockets.on('connection', function(socket) {
   socket.on('move', function (move) {
     console.log('[info] received move', move);
     me.game.players.forEach(function(id, user) {
-      if (me.id === user.id) return;
+      if (user.is(me)) return;
       user.socket.emit('move', move);
     });
   });
@@ -83,12 +83,18 @@ io.sockets.on('connection', function(socket) {
     me.game.players.remove(me.id);
     // end game logic
     var data = { user: me.json() };
-    me.game.ended = me.game.players.size() <= 1;
+    var players = me.game.players;
+    me.game.ended = players.size() <= 1;
     me.game.players.forEach(function(id, user) {
       if (me.game.ended)
         data.winner = user.json();
       user.socket.emit('disconnect', data);
     });
+    // remove game reference
+    if (me.game.ended) {
+      games.remove(me.game.id);
+      me.game = null;
+    }
   });
 
 });

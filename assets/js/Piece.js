@@ -1,7 +1,7 @@
 Connect4.Piece = Game3.Model.extend({
 
   init: function(game, player, row, col, height) {
-    this.playerId = player.id;
+    this.owner = player;
     this.color = player.color;
 
     var radius = Connect4.SIZE/2;
@@ -11,6 +11,7 @@ Connect4.Piece = Game3.Model.extend({
     mesh.position = this._getPosition(row, col, height);
 
     // cleanup
+    this.interactive = true;
     this.mesh(mesh);
   },
 

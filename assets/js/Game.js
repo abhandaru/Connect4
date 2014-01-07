@@ -6,8 +6,8 @@ Connect4.Game = Game3.Game.extend({
     this.el.appendChild(this.logger.el);
 
     // lights
-    this.lightA = new Game3.Light(0xBBBBBB, new THREE.Vector3(400, 300, -400));
-    this.lightB = new Game3.Light(0xBBBBBB, new THREE.Vector3(-400, 300, 400));
+    this.lightA = new Game3.Light(Connect4.LIGHT, new THREE.Vector3(400, 300, -400));
+    this.lightB = new Game3.Light(Connect4.LIGHT, new THREE.Vector3(-400, 300, 400));
     this.add(this.lightA);
     this.add(this.lightB);
 
@@ -29,16 +29,17 @@ Connect4.Game = Game3.Game.extend({
       var player = new Connect4.Player(_this, user);
       this.user = player;
       this.players.push(player);
-      this.logger.info('self', player.name());
+      this.logger.info('Self', player.name());
     }.bind(this));
     this.socket.on('player', function(player) {
       var player = new Connect4.Player(_this, player);
       this.players.push(player);
-      this.logger.info('player connected', player.name());
+      this.logger.info('Player connected', player.name());
     }.bind(this));
 
     // turn management
     this.started = false;
+    this.ended = false;
     this.turns = 0;
     this.socket.on('start', function(data) {
       _this.start();
@@ -46,6 +47,7 @@ Connect4.Game = Game3.Game.extend({
 
     // receiving moves
     this.socket.on('move', function(move) {
+      // match the player
       var player = null;
       for (var i = 0; i < this.players.length; i++) {
         var test = this.players[i];
@@ -57,7 +59,11 @@ Connect4.Game = Game3.Game.extend({
       // replicate move and log
       this.logger.info('Player move', player.name(), '@', move.row, move.col);
       this.board.slots[move.row][move.col].move(player);
-      this.next();
+      if (move.win) {
+        this.ended = true;
+        this.logger.warn('Defeat!');
+      } else
+        this.next();
     }.bind(this));
 
     // disconnection
@@ -71,20 +77,26 @@ Connect4.Game = Game3.Game.extend({
           break;
         }
       }
-      // notify the opponents
-      this.logger.warn('Player disconnected', player.name());
+      // notify the client
+      this.logger.warn('Opponent disconnected', player.name());
       // did the game end?
       if (data.winner) {
+        this.ended = true;
         if (data.winner.id === this.user.id)
-          this.logger.gogo('You are victorious!');
+          this.logger.impt('You are victorious!');
         else
           this.logger.warn('Defeat!');
+      } else {
+        // remaining players can still play
+        // just update the current player (without changing the turn).
+        this.logger.info('Continuing play...');
+        this.current = this.players[this.turns % this.players.length];
       }
     }.bind(this));
   },
 
   start: function() {
-    this.logger.gogo('Start game!');
+    this.logger.impt('Start game!');
     // get total ordering
     this.players.sort(Connect4.Player.compare);
     this.players.forEach(function(player, index) {
@@ -100,12 +112,12 @@ Connect4.Game = Game3.Game.extend({
     this.turns++;
     // notify user if it is their move
     if (this.current.is(this.user))
-      this.logger.gogo('Your turn!');
+      this.logger.impt('Your turn!');
   },
 
   move: function(row, col) {
     // players have not arrived yet
-    if (!this.started) return;
+    if (!this.started || this.ended) return;
     // not this players move
     if (!this.current.is(this.user)) return;
 
@@ -113,9 +125,14 @@ Connect4.Game = Game3.Game.extend({
     var player = this.current;
     var valid = this.board.slots[row][col].move(player);
     if (valid) {
-      this.socket.emit('move', { player_id: player.id, row: row, col: col });
-      this.next();
       this.logger.info('Player move', player.name(), '@', row, col);
+      // see if the game has ended
+      this.ended = this.board.isWinner(this.current);
+      this.socket.emit('move', { player_id: player.id, row: row, col: col, win: this.ended });
+      if (this.ended)
+        this.logger.impt('You are victorious!');
+      else
+        this.next();
     } else
       this.logger.warn('Invalid move @', row, col);
   },
@@ -129,16 +146,29 @@ Connect4.Game = Game3.Game.extend({
 
   scroll: function(event) {
     var dx = event.scrollDelta().x;
-    var pos = this.camera.position;
-    var radius = Math.sqrt(pos.x*pos.x + pos.z*pos.z);
-    var theta = Math.atan2(pos.z, pos.x) + dx * 0.005;
-    pos.x = Math.cos(theta) * radius;
-    pos.z = Math.sin(theta) * radius;
-    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    this._rotate(dx * 0.005);
+  },
+
+  mousedrag: function(event) {
+    var dx = event.delta2D.x;
+    this._rotate(dx * 0.005);
   },
 
   mouseover: function(event) {
     this.cursor.hide();
-  }
+  },
 
+
+  //
+  // Helper functions
+  //
+
+  _rotate: function(dtheta) {
+    var pos = this.camera.position;
+    var radius = Math.sqrt(pos.x*pos.x + pos.z*pos.z);
+    var theta = Math.atan2(pos.z, pos.x) + dtheta;
+    pos.x = Math.cos(theta) * radius;
+    pos.z = Math.sin(theta) * radius;
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+  }
 });

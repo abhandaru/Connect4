@@ -21,6 +21,10 @@ user.User = function(id, order, socket) {
 
 user.User.prototype = {
 
+  is: function(that) {
+    return this.id === that.id;
+  },
+
   json: function() {
     return {
       id: this.id,

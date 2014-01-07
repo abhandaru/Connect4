@@ -19,12 +19,17 @@ body {
   width: 300px;
   font-family: Arial, Helvetica, Sans-Serif;
   font-size: 13px;
+  background: rgba(255, 255, 255, 0.5);
   /*overflow: auto;*/
 }
 
 #connect4 .logger .message {
   padding: 2px 10px;
   color: #333;
+}
+
+#connect4 .logger .message.info {
+  color: #555;
 }
 
 #connect4 .logger .message.info:before {
@@ -39,7 +44,7 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
-#connect4 .logger .message.gogo:before {
+#connect4 .logger .message.impt:before {
   content: 'impt ';
   color: #00BA06;
   font-family: "Courier New", Courier, monospace;

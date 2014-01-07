@@ -7,8 +7,8 @@ Connect4.Logger = Game3.Class.extend({
     this.el = el;
   },
 
-  gogo: function() {
-    var line = this._line(arguments, 'gogo');
+  impt: function() {
+    var line = this._line(arguments, 'impt');
     this._add(line);
   },
 

@@ -20,7 +20,10 @@ var app = express();
 var server = http.createServer(app);
 var io = socketio.listen(server, {log: false});
 
-console.log('[info] starting', config.production, config.port);
+// log environment and config
+console.log('[info] starting');
+console.log('[info] environment', process.env.NODE_ENV, config.production);
+console.log('[info] ports', config.prodPort, config.port);
 
 // app config
 server.listen(config.port);

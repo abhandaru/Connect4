@@ -24,7 +24,6 @@ user.User.prototype = {
   json: function() {
     return {
       id: this.id,
-      order: this.order
     };
   }
 

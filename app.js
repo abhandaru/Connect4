@@ -80,6 +80,7 @@ io.sockets.on('connection', function(socket) {
   socket.on('disconnect', function() {
     console.log('[info] user disconnected', me.json());
     users.remove(me.id);
+    me.game.players.remove(me.id);
     me.game.players.forEach(function(id, user) {
       user.socket.emit('disconnect', me.json());
     });

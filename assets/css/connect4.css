@@ -11,3 +11,21 @@ body {
   right: 0px;
   left: 0px;
 }
+
+#connect4 .logger {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 350px;
+  font-family: Arial, Helvetica, Sans-Serif;
+  font-size: 13px;
+  /*overflow: auto;*/
+}
+
+#connect4 .logger .message {
+  padding: 2px 10px;
+}
+
+#connect4 .logger .message.info:before {
+  content: '[info] ';
+}

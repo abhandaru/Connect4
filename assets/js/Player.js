@@ -2,12 +2,16 @@ Connect4.Player = Game3.Class.extend({
 
   init: function(game, data) {
     this.id = data.id;
-    this.order = data.order;
+    this._order = -1;
+    this.color = 0xAAAAAA;
+  },
 
+  order: function(order) {
+    if (order === undefined) return this._order;
+    this._order = order;
     // determine color
-    var colors = [ 0x0000FF, 0xFF0000, 0x00FF00 ];
-    var index = this.order % colors.length;
-    this.color = colors[index];
+    var index = order % Connect4.COLORS.length;
+    this.color = Connect4.COLORS[index];
   }
 
 });

@@ -1,6 +1,10 @@
 Connect4.Game = Game3.Game.extend({
 
   init: function(el) {
+    // logger
+    this.logger = new Connect4.Logger();
+    this.el.appendChild(this.logger.el);
+
     // lights
     this.lightA = new Game3.Light(0xBBBBBB, new THREE.Vector3(400, 300, -400));
     this.lightB = new Game3.Light(0xBBBBBB, new THREE.Vector3(-400, 300, 400));
@@ -27,13 +31,15 @@ Connect4.Game = Game3.Game.extend({
       _this.players.push(player);
       _this.add(player);
       console.log('[info] self', player);
+      _this.logger.info('self', player.id);
     });
     this.socket.on('player', function(player) {
       var player = new Connect4.Player(_this, player);
       _this.players.push(player);
       _this.add(player);
       console.log('[info] player connected', player);
-    })
+      _this.logger.info('player connected', player.id);
+    });
 
     // turn management
     this.started = false;
@@ -57,10 +63,17 @@ Connect4.Game = Game3.Game.extend({
   },
 
   start: function() {
-    this.players.sort(Connect4.Player.compare); // get total ordering
-    this.started = true;
+    // get total ordering
+    this.players.sort(Connect4.Player.compare);
+    this.players.forEach(function(player, index) {
+      player.order(index);
+    });
+    // get first player
     this.current = this.players[this.turns % this.players.length];
+    this.started = true;
+    // logging
     console.log('[info] start game', this.current);
+    this.logger.info('start game', this.current.id);
   },
 
   next: function() {
@@ -91,6 +104,16 @@ Connect4.Game = Game3.Game.extend({
   //
 
   update: function(dt) {  },
+
+  mousedrag: function(event) {
+    var dx = event.delta2D.x;
+    var pos = this.camera.position;
+    var radius = Math.sqrt(pos.x*pos.x + pos.z*pos.z);
+    var theta = Math.atan2(pos.z, pos.x) + dx * 0.005;
+    pos.x = Math.cos(theta) * radius;
+    pos.z = Math.sin(theta) * radius;
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+  },
 
   mouseover: function(event) {
     this.cursor.hide();

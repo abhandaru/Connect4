@@ -6,21 +6,24 @@ Multiplayer Connect 4 with a 3D twist.
 
 The project is currently live on Heroku at [http://connect3d.herokuapp.com/](connect3d.herokuapp.com/). Feel free to jump into matchmaking.
 
+
+#### New Features
+
+- Highlighted win streak
+- Tab notification on move
+
+
 #### Upcoming Features
 
-The following features are being prioritized (at my discretion).
+The following features are being prioritized (at my discretion). By popular demand:
 
 - Rotation over phi axis and zoom
-- Highlighted win streak
-- Notification on move
-
-Later on we should have these as well. Due to popular demand:
-
 - Names
 - Chat
 - Connection timeouts
 
-### Contributing
+
+#### Contributing
 
 Easy to clone and install!
 

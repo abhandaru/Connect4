@@ -58,15 +58,17 @@ Connect4.Game = Game3.Game.extend({
           break;
         }
       }
-      // replicate move and log
-      var slot = this.board.slots[move.row][move.col];
-      slot.move(player);
-      this.alerts.update();
-      this.logger.info('Player moved', player.name(), '@', move.row, move.col);
       // update the last move
+      var slot = this.board.slots[move.row][move.col];
       if (this.lastMove)
         this.lastMove.unmark();
-      this.lastMove = slot.mark();
+      this.lastMove = slot;
+      // make move and log
+      slot.move(player);
+      slot.mark();
+      this.alerts.update();
+      this.logger.info('Opponent moved', player.name(), '@', move.row, move.col);
+
       // was this a winning move?
       if (move.win) {
         this.ended = true;
@@ -142,13 +144,14 @@ Connect4.Game = Game3.Game.extend({
     // general case
     var player = this.current;
     var slot = this.board.slots[row][col];
-    var valid = slot.move(player);
-    if (valid) {
-      this.logger.info('You moved', player.name(), '@', row, col);
-      this.cursor.hide();
+    if (slot.legal()) {
       // acknowledge the opponent's move
       if (this.lastMove)
         this.lastMove.unmark();
+      // make move and log
+      slot.move(player);
+      this.logger.info('You moved', player.name(), '@', row, col);
+      this.cursor.hide();
       // see if the game has ended
       this.ended = this.board.isWinner(this.current);
       this.socket.emit('move', { player_id: player.id, row: row, col: col, win: this.ended });

@@ -34,11 +34,16 @@ Connect4.Slot = Game3.Model.extend({
   // Drops a piece down the slot.
   //
 
+  legal: function() {
+    return this.pieces.length < Connect4.HEIGHT;
+  },
+
   move: function(player) {
-    if (this.pieces.length >= Connect4.HEIGHT) return false;
+    if (!this.legal()) return false;
     // this is a valid move
     var piece = new Connect4.Piece(
         this, player, this.row, this.col, this.pieces.length);
+    // add to the scene
     this.add(piece);
     this.pieces.push(piece);
     return true;
@@ -50,11 +55,13 @@ Connect4.Slot = Game3.Model.extend({
   //
 
   mark: function() {
+    if (!this.pieces.length) return this;
     this.pieces[this.pieces.length - 1].mark();
     return this;
   },
 
   unmark: function() {
+    if (!this.pieces.length) return this;
     this.pieces[this.pieces.length - 1].unmark();
     return this;
   },

@@ -3,10 +3,7 @@ var Connect4 = { };
 
 // system
 Connect4.DEBUG = false;
-Connect4.LOCAL = false;
-Connect4.DOMAIN = 'fierce-bayou-5168.herokuapp.com'
-Connect4.IP = (Connect4.LOCAL) ? 'localhost' : Connect4.DOMAIN;
-Connect4.HOST = 'http://' + Connect4.IP;
+Connect4.HOST = window.location;
 
 // config
 Connect4.SIZE = 100;

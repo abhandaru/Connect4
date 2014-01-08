@@ -42,7 +42,7 @@ util.Map.prototype = {
 
   remove: function(key) {
     var hash = this._hash(key);
-    var old = this._data[hash][1];
+    var old = this._data[hash] && this._data[hash][1];
     delete this._data[hash];
     this._size--;
     return old;

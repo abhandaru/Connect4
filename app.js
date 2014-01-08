@@ -66,7 +66,7 @@ io.sockets.on('connection', function(socket) {
 
   // start the game if we have enough players
   if (me.game.closed()) {
-    console.log('[info] start game');
+    console.log('[info] start game', me.game.id);
     me.game.players.forEach(function(id, user) {
       user.socket.emit('start');
     });

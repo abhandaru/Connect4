@@ -10,8 +10,4 @@ Easy to clone and install!
     $ npm install
     $ node app.js
 
-For local testing, you will want to modify `assets/js/Connect4.js` as follows:
-
-    Connect4.DEBUG = true // -> now uses localhost for socket.io
-
 Boot up a browser and point it to `http://localhost:3000`.

@@ -4,6 +4,7 @@ Connect4.Game = Game3.Game.extend({
     // logger
     this.logger = new Connect4.Logger();
     this.el.appendChild(this.logger.el);
+    this.logger.impt('Welcome to Connect3d!');
 
     // lights
     this.lightA = new Game3.Light(Connect4.LIGHT, new THREE.Vector3(400, 300, -400));
@@ -57,11 +58,12 @@ Connect4.Game = Game3.Game.extend({
         }
       }
       // replicate move and log
-      this.logger.info('Player move', player.name(), '@', move.row, move.col);
+      this.logger.info('Player moved', player.name(), '@', move.row, move.col);
       this.board.slots[move.row][move.col].move(player);
       if (move.win) {
         this.ended = true;
         this.logger.warn('Defeat!');
+        this.logger.info('Refresh to play again.');
       } else
         this.next();
     }.bind(this));
@@ -84,10 +86,12 @@ Connect4.Game = Game3.Game.extend({
       // did the game just end?
       if (data.winner) {
         this.ended = true;
-        if (data.winner.id === this.user.id)
+        if (data.winner.id === this.user.id) {
           this.logger.impt('You are victorious!');
-        else
+        } else {
           this.logger.warn('Defeat!');
+        }
+        this.logger.info('Refresh to play again.');
       } else {
         // remaining players can still play
         // just update the current player (without changing the turn).
@@ -114,7 +118,7 @@ Connect4.Game = Game3.Game.extend({
     this.turns++;
     // notify user if it is their move
     if (this.current.is(this.user))
-      this.logger.impt('Your turn!');
+      this.logger.impt('Your move!');
   },
 
   move: function(row, col) {
@@ -127,13 +131,14 @@ Connect4.Game = Game3.Game.extend({
     var player = this.current;
     var valid = this.board.slots[row][col].move(player);
     if (valid) {
-      this.logger.info('Your move', player.name(), '@', row, col);
+      this.logger.info('You moved', player.name(), '@', row, col);
       // see if the game has ended
       this.ended = this.board.isWinner(this.current);
       this.socket.emit('move', { player_id: player.id, row: row, col: col, win: this.ended });
-      if (this.ended)
+      if (this.ended) {
         this.logger.impt('You are victorious!');
-      else
+        this.logger.info('Refresh to play again.');
+      } else
         this.next();
     } else
       this.logger.warn('Invalid move @', row, col);

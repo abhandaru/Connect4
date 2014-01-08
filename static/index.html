@@ -1,5 +1,6 @@
 <html>
 <head>
+  <title>Connect3D</title>
   <link rel="stylesheet" type="text/css" href="css/connect4.css" />
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="js/three.js"></script>
@@ -17,12 +18,17 @@
 <body>
   <div id="connect4"></div>
   <script type="text/javascript">
-(function() {
-  // entry point
-  var el = document.getElementById('connect4');
-  var game = new Connect4.Game(el);
-  console.log(game);
-})();
+    (function() {
+      // entry point
+      var el = document.getElementById('connect4');
+      var game = new Connect4.Game(el);
+    })();
   </script>
+  <div id="footer">
+    <div class="instr"><b>Scroll</b> or <b>click+drag</b> to rotate the board.</div>
+    <div>Built using <a href="http://abhandaru.github.io/Game3/">Game3.js</a>, <a href="http://threejs.org/">THREE.js</a>, <a href="http://socket.io/">Socket.io</a>, and <a href="http://nodejs.org/">Node.JS</a>.</div>
+    <div>Find the <a href="https://github.com/abhandaru/Connect4">source</a> on GitHub.</div>
+    <div class="copy">&copy; 2014 <a href="http://abhandaru.com">Adu Bhandaru</a></div>
+  </div>
 </body>
-</html>
+</html>a

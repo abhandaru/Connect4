@@ -15,10 +15,13 @@ Connect4.Slot = Game3.Model.extend({
         Connect4.SIZE * row);
 
     // set up the base
+    var color = 0xAAAAAA;
+    var material = new THREE.MeshPhongMaterial({
+        color: color, ambient: color, specular: 0xFFFFFF, shininess: 100});
     this.base = new THREE.Mesh(
         new THREE.CylinderGeometry(
-          Connect4.SIZE/2, Connect4.SIZE/2, this.thickness, 40),
-        new THREE.MeshLambertMaterial());
+            Connect4.SIZE/2, Connect4.SIZE/2, this.thickness, 40),
+        material);
     this.base.position = position.sub(offset);
 
     // set the mesh

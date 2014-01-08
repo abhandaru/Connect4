@@ -14,5 +14,20 @@ Connect4.HEIGHT = 5;
 Connect4.GOAL = 4;
 
 // styling
-Connect4.LIGHT = 0xAAAAAA;
-Connect4.COLORS = [ 0x0000FF, 0xFF0000, 0x00FF00 ];
+Connect4.colors = [ 0x5555FF, 0xFF5555, 0x55FF55 ];
+
+// strings
+Connect4.strings = {
+  connection: 'Player connected',
+  continue: 'Continuing play...',
+  defeat: '<b>Defeat!</b>',
+  disconnection: 'Opponent disconnected',
+  invalid: 'Invalid move',
+  queued: 'Waiting in queue ...',
+  refresh: 'Refresh to play again.',
+  start: '<b>Start game!</b>',
+  victory: '<b>You are victorious!</b>',
+  waiting: 'Waiting for opponent ...',
+  welcome: '<b>Welcome to Connect3d!</b>',
+  your_turn: 'Your move!'
+};

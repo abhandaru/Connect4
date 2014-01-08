@@ -6,6 +6,9 @@ Connect4.Game = Game3.Game.extend({
     this.el.appendChild(this.logger.el);
     this.logger.impt('Welcome to Connect3d!');
 
+    // alerts
+    this.alerts = new Connect4.Alerts();
+
     // lights
     this.lightA = new Game3.Light(Connect4.LIGHT, new THREE.Vector3(400, 300, -400));
     this.lightB = new Game3.Light(Connect4.LIGHT, new THREE.Vector3(-400, 300, 400));
@@ -42,9 +45,7 @@ Connect4.Game = Game3.Game.extend({
     this.started = false;
     this.ended = false;
     this.turns = 0;
-    this.socket.on('start', function(data) {
-      _this.start();
-    });
+    this.socket.on('start', this.start.bind(this));
 
     // receiving moves
     this.socket.on('move', function(move) {
@@ -58,6 +59,7 @@ Connect4.Game = Game3.Game.extend({
         }
       }
       // replicate move and log
+      this.alerts.update();
       this.logger.info('Player moved', player.name(), '@', move.row, move.col);
       this.board.slots[move.row][move.col].move(player);
       if (move.win) {
@@ -69,7 +71,7 @@ Connect4.Game = Game3.Game.extend({
     }.bind(this));
 
     // disconnection
-    this.socket.on('disconnect', function(data) {
+    this.socket.on('leave', function(data) {
       // remover player
       var player = null;
       for (var i = 0; i < this.players.length; i++) {
@@ -80,6 +82,7 @@ Connect4.Game = Game3.Game.extend({
         }
       }
       // notify the client
+      this.alerts.update();
       this.logger.warn('Opponent disconnected', player.name());
       // has the game already ended?
       if (this.ended) return;
@@ -103,6 +106,7 @@ Connect4.Game = Game3.Game.extend({
 
   start: function() {
     this.logger.impt('Start game!');
+    this.alerts.update();
     // get total ordering
     this.players.sort(Connect4.Player.compare);
     this.players.forEach(function(player, index) {
@@ -119,6 +123,8 @@ Connect4.Game = Game3.Game.extend({
     // notify user if it is their move
     if (this.current.is(this.user))
       this.logger.impt('Your move!');
+    else
+      this.logger.info('Waiting for opponent ...');
   },
 
   move: function(row, col) {

@@ -93,7 +93,7 @@ io.sockets.on('connection', function(socket) {
     me.game.players.forEach(function(id, user) {
       if (me.game.ended)
         data.winner = user.json();
-      user.socket.emit('disconnect', data);
+      user.socket.emit('leave', data);
     });
     // remove game reference
     if (me.game.ended) {

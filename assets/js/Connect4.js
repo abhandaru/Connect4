@@ -1,7 +1,7 @@
 // namespace
 var Connect4 = { };
 
-// system
+// connection
 Connect4.DEBUG = false;
 Connect4.DOMAIN = 'connect3d.herokuapp.com'
 Connect4.HOST = window.location;

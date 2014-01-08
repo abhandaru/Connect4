@@ -15,7 +15,7 @@ Connect4.GOAL = 4;
 
 // styling
 Connect4.colors = [ 0x5555FF, 0xFF5555, 0x55FF55 ];
-Connect4.highlights = [ 0xAAAAFF, 0xFFAAAA, 0xAAFFAA ];
+Connect4.highlights = [ 0xAAAAFF, 0xFF8888, 0xAAFFAA ];
 
 // strings
 Connect4.strings = {
@@ -24,6 +24,7 @@ Connect4.strings = {
   defeat: '<b>Defeat!</b>',
   disconnection: 'Opponent disconnected',
   invalid: 'Invalid move',
+  mismatch: 'Board states disagree.',
   queued: 'Waiting in queue ...',
   refresh: 'Refresh to play again.',
   start: '<b>Start game!</b>',

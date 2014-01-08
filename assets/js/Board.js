@@ -38,7 +38,7 @@ Connect4.Board = Game3.Model.extend({
   //   the optimizations for later.
   //
 
-  isWinner: function(player) {
+  winner: function(player) {
     for (var row = 0; row < this.slots.length; row++) {
       for (var col = 0; col < this.slots[0].length; col++) {
         for (var plane = 0; plane < Connect4.HEIGHT; plane++) {

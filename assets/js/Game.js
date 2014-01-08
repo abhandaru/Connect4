@@ -71,6 +71,10 @@ Connect4.Game = Game3.Game.extend({
 
       // was this a winning move?
       if (move.win) {
+        var ended = this.board.winner(player);
+        if (!ended)
+          this.logger.warn(Connect4.strings.mismatch);
+        // notify user of defeat
         this.ended = true;
         this.logger.warn(Connect4.strings.defeat);
         this.logger.info(Connect4.strings.refresh);
@@ -153,7 +157,7 @@ Connect4.Game = Game3.Game.extend({
       this.logger.info('You moved', player.name(), '@', row, col);
       this.cursor.hide();
       // see if the game has ended
-      this.ended = this.board.isWinner(this.current);
+      this.ended = this.board.winner(this.current);
       this.socket.emit('move', { player_id: player.id, row: row, col: col, win: this.ended });
       if (this.ended) {
         this.logger.impt(Connect4.strings.victory);

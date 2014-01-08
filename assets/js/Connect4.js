@@ -15,6 +15,7 @@ Connect4.GOAL = 4;
 
 // styling
 Connect4.colors = [ 0x5555FF, 0xFF5555, 0x55FF55 ];
+Connect4.highlights = [ 0xAAAAFF, 0xFFAAAA, 0xAAFFAA ];
 
 // strings
 Connect4.strings = {

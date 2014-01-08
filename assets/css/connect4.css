@@ -36,8 +36,13 @@ body {
   color: #555;
 }
 
-#footer div.instr {
+#footer div.view {
   color: #111;
+  padding-bottom: 5px;
+}
+
+#footer div.rules {
+  color: #000;
   padding-bottom: 5px;
 }
 
@@ -58,7 +63,7 @@ body {
   font-size: 13px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 3px;
-  padding: 10px;
+  padding: 7px 10px 10px 10px;
 }
 
 #connect4 .logger .message {

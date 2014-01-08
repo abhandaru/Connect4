@@ -3,7 +3,9 @@ Connect4.Player = Game3.Class.extend({
   init: function(game, data) {
     this.id = data.id;
     this._order = -1;
+    // default colors
     this.color = 0xAAAAAA;
+    this.highlight = 0x555555;
   },
 
   order: function(order) {
@@ -12,6 +14,7 @@ Connect4.Player = Game3.Class.extend({
     // determine color
     var index = order % Connect4.colors.length;
     this.color = Connect4.colors[index];
+    this.highlight = Connect4.highlights[index];
   },
 
   name: function() {

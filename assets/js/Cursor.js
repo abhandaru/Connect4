@@ -6,11 +6,15 @@ Connect4.Cursor = Game3.Model.extend({
     this.height = -1;
     this.radius = Connect4.SIZE/2;
 
-    // set up the cursor mesh
-    this.material = new THREE.MeshLambertMaterial({
-        transparent: true, opacity: 0.5});
+    // create texture
+    this.material = new THREE.MeshPhongMaterial({
+        transparent: true, opacity: 0.4,
+        color: 0xFFFFFF, ambient: 0xFFFFFF, specular: 0xAAAAAA, shininess: 100});
+
+    // create geometry
+    var radius = Connect4.SIZE/2;
     this.ghost = new THREE.Mesh(
-        new THREE.SphereGeometry(this.radius, 40, 40), this.material);
+        new THREE.SphereGeometry(radius, 40, 40), this.material);
 
     // clean up
     this.mesh(this.ghost);

@@ -29,6 +29,11 @@ Connect4.Slot = Game3.Model.extend({
     this.mesh(this.base);
   },
 
+
+  //
+  // Drops a piece down the slot.
+  //
+
   move: function(player) {
     if (this.pieces.length >= Connect4.HEIGHT) return false;
     // this is a valid move
@@ -39,6 +44,20 @@ Connect4.Slot = Game3.Model.extend({
     return true;
   },
 
+
+  //
+  // Top of the stack tracks the last move.
+  //
+
+  mark: function() {
+    this.pieces[this.pieces.length - 1].mark();
+    return this;
+  },
+
+  unmark: function() {
+    this.pieces[this.pieces.length - 1].unmark();
+    return this;
+  },
 
   //
   // Event handlers

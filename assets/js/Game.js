@@ -25,6 +25,13 @@ Connect4.Game = Game3.Game.extend({
     var _this = this;
     this.socket = io.connect(Connect4.HOST);
 
+    // turn management
+    this.started = false;
+    this.ended = false;
+    this.turns = 0;
+    this.lastMove = null;
+    this.socket.on('start', this.start.bind(this));
+
     // set up players
     this.players = [ ];
     this.socket.on('user', function(user) {
@@ -40,12 +47,6 @@ Connect4.Game = Game3.Game.extend({
       this.logger.info(Connect4.strings.connection, player.name());
     }.bind(this));
 
-    // turn management
-    this.started = false;
-    this.ended = false;
-    this.turns = 0;
-    this.socket.on('start', this.start.bind(this));
-
     // receiving moves
     this.socket.on('move', function(move) {
       // match the player
@@ -58,9 +59,15 @@ Connect4.Game = Game3.Game.extend({
         }
       }
       // replicate move and log
+      var slot = this.board.slots[move.row][move.col];
+      slot.move(player);
       this.alerts.update();
       this.logger.info('Player moved', player.name(), '@', move.row, move.col);
-      this.board.slots[move.row][move.col].move(player);
+      // update the last move
+      if (this.lastMove)
+        this.lastMove.unmark();
+      this.lastMove = slot.mark();
+      // was this a winning move?
       if (move.win) {
         this.ended = true;
         this.logger.warn(Connect4.strings.defeat);
@@ -134,10 +141,14 @@ Connect4.Game = Game3.Game.extend({
 
     // general case
     var player = this.current;
-    var valid = this.board.slots[row][col].move(player);
+    var slot = this.board.slots[row][col];
+    var valid = slot.move(player);
     if (valid) {
       this.logger.info('You moved', player.name(), '@', row, col);
       this.cursor.hide();
+      // acknowledge the opponent's move
+      if (this.lastMove)
+        this.lastMove.unmark();
       // see if the game has ended
       this.ended = this.board.isWinner(this.current);
       this.socket.emit('move', { player_id: player.id, row: row, col: col, win: this.ended });

@@ -3,17 +3,32 @@ Connect4.Piece = Game3.Model.extend({
   init: function(game, player, row, col, height) {
     this.owner = player;
     this.color = player.color;
+    this.highlight = player.highlight;
+    this.marked = false;
 
-    var radius = Connect4.SIZE/2;
-    var material = new THREE.MeshPhongMaterial({
+    // create texture
+    this.material = new THREE.MeshPhongMaterial({
         color: this.color, ambient: this.color, specular: 0xAAAAAA, shininess: 100});
-    var mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 40, 40), material);
-    mesh.position = this._getPosition(row, col, height);
+
+    // create geometry
+    var radius = Connect4.SIZE/2;
+    this.piece = new THREE.Mesh(
+        new THREE.SphereGeometry(radius, 40, 40), this.material);
+    this.piece.position = this._getPosition(row, col, height);
 
     // cleanup
     this.interactive = true;
-    this.mesh(mesh);
+    this.mesh(this.piece);
+  },
+
+  mark: function() {
+    this.marked = true;
+    this.material.color.setHex(this.highlight);
+  },
+
+  unmark: function() {
+    this.marked = false;
+    this.material.color.setHex(this.color);
   },
 
 

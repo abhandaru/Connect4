@@ -17,6 +17,8 @@ Connect4.Board = Game3.Model.extend({
       this._checkNegXYZPosDiag,
       this._checkNegXYZNegDiag
     ];
+    this.mark = false;
+
     // create slots
     this.slots = [ ];
     for (var i = 0; i < Connect4.ROWS; i++) {
@@ -51,8 +53,13 @@ Connect4.Board = Game3.Model.extend({
   _check: function(player, row, col, plane) {
     var args = [player, row, col, plane];
     for (var i = 0; i < this.checks.length; i++) {
-      if (this.checks[i].apply(this, args))
+      if (this.checks[i].apply(this, args)) {
+        // A winning sequence was found, marks the pieces.
+        this.mark = true;
+        this.checks[i].apply(this, args);
+        this.mark = false;
         return true;
+      }
     }
     return false;
   },
@@ -204,6 +211,8 @@ Connect4.Board = Game3.Model.extend({
     if (!slot) return false;
     // get the piece
     var piece = slot.pieces.length > plane && slot.pieces[plane];
+    // mark if needed
+    if (this.mark) piece.mark();
     return piece;
   }
 

@@ -22,7 +22,6 @@ Connect4.Game = Game3.Game.extend({
     this.add(this.cursor);
 
     // set up sockets
-    var _this = this;
     this.socket = io.connect(Connect4.HOST);
 
     // turn management
@@ -134,7 +133,7 @@ Connect4.Game = Game3.Game.extend({
     this.turns++;
     // notify user if it is their move
     if (this.current.is(this.user))
-      this.logger.impt(Connect4.strings.your_turn);
+      this.logger.impt(Connect4.strings.yourTurn);
     else
       this.logger.info(Connect4.strings.waiting);
   },
@@ -176,8 +175,8 @@ Connect4.Game = Game3.Game.extend({
   update: function(dt) {  },
 
   scroll: function(event) {
-    var dx = event.scrollDelta().x;
-    this._rotate(dx * 0.005);
+    var delta = event.scrollDelta();
+    this._changeView(delta.x * 0.005, delta.y);
   },
 
   mousedrag: function(event) {
@@ -194,12 +193,24 @@ Connect4.Game = Game3.Game.extend({
   // Helper functions
   //
 
+  _changeView: function(dtheta, dy) {
+    this._rotate(dtheta);
+    this._elevate(dy);
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+  },
+
+  _elevate: function(dy) {
+    var pos = this.camera.position;
+    var y = pos.y - dy;
+    // clamp the value
+    pos.y = Math.max(500, Math.min(y, 1500));
+  },
+
   _rotate: function(dtheta) {
     var pos = this.camera.position;
     var radius = Math.sqrt(pos.x*pos.x + pos.z*pos.z);
     var theta = Math.atan2(pos.z, pos.x) + dtheta;
     pos.x = Math.cos(theta) * radius;
     pos.z = Math.sin(theta) * radius;
-    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
   }
 });

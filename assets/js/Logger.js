@@ -5,6 +5,7 @@ Connect4.Logger = Game3.Class.extend({
     var el = document.createElement('div');
     el.className = 'logger';
     this.el = el;
+    this.max = 20;
   },
 
   impt: function() {
@@ -33,6 +34,9 @@ Connect4.Logger = Game3.Class.extend({
   //
 
   _add: function(line) {
+    if (this.el.children.length >= this.max)
+      this.el.removeChild(this.el.firstChild);
+    // append the message
     this.el.appendChild(line);
     this._scroll();
   },

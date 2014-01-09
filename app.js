@@ -9,7 +9,8 @@ var connect = require('connect-assets'),
     http = require('http'),
     socketio = require('socket.io');
 
-var config = require('./app/config'),
+var actions = require('./app/actions'),
+    config = require('./app/config'),
     Game = require('./app/game').Game,
     User = require('./app/user').User,
     util = require('./app/util');
@@ -75,31 +76,19 @@ io.sockets.on('connection', function(socket) {
   // broadcast the move
   socket.on('move', function (move) {
     console.log('[info] received move', move);
-    me.game.players.forEach(function(id, user) {
-      if (user.is(me)) return;
-      user.socket.emit('move', move);
-    });
+     actions.move(me, move);
+  });
+
+  // user forfeit
+  socket.on('forfeit', function() {
+    console.log('[info] user forfeit', me.json());
+    actions.forfeit(me);
   });
 
   // user disconnection
   socket.on('disconnect', function() {
     console.log('[info] user disconnected', me.json());
-    users.remove(me.id);
-    me.game.players.remove(me.id);
-    // end game logic
-    var data = { user: me.json() };
-    var players = me.game.players;
-    me.game.ended = players.size() <= 1;
-    me.game.players.forEach(function(id, user) {
-      if (me.game.ended)
-        data.winner = user.json();
-      user.socket.emit('leave', data);
-    });
-    // remove game reference
-    if (me.game.ended) {
-      games.remove(me.game.id);
-      me.game = null;
-    }
+    actions.disconnect(games, users, me);
   });
 
 });

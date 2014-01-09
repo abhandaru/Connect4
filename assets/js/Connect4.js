@@ -19,17 +19,17 @@ Connect4.highlights = [ 0xAAAAFF, 0xFF8888, 0xAAFFAA ];
 
 // strings
 Connect4.strings = {
-  connection: 'Player connected',
-  continue: 'Continuing play...',
-  defeat: '<b>Defeat!</b>',
+  connection:    'Player connected',
+  continue:      'Continuing play ...',
+  defeat:        '<b>Defeat!</b>',
   disconnection: 'Opponent disconnected',
-  invalid: 'Invalid move',
-  mismatch: 'Board states disagree.',
-  queued: 'Waiting in queue ...',
-  refresh: 'Refresh to play again.',
-  start: '<b>Start game!</b>',
-  victory: '<b>You are victorious!</b>',
-  waiting: 'Waiting for opponent ...',
-  welcome: '<b>Welcome to Connect3d!</b>',
-  your_turn: 'Your move!'
+  invalid:       'Invalid move',
+  mismatch:      'Board states disagree.',
+  queued:        'Waiting in queue ...',
+  refresh:       'Refresh to play again.',
+  start:         '<b>Start game!</b>',
+  victory:       '<b>You are victorious!</b>',
+  waiting:       'Waiting for opponent ...',
+  welcome:       '<b>Welcome to Connect3d!</b>',
+  yourTurn:      'Your move!'
 };

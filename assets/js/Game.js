@@ -181,7 +181,7 @@ Connect4.Game = Game3.Game.extend({
 
   mousedrag: function(event) {
     var delta = event.delta2D;
-    this._changeView(delta.x * 0.005, delta.y);
+    this._changeView(delta.x * 0.01, delta.y * 2.0);
   },
 
   mouseover: function(event) {

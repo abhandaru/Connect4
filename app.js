@@ -76,7 +76,7 @@ io.sockets.on('connection', function(socket) {
   // broadcast the move
   socket.on('move', function (move) {
     console.log('[info] received move', move);
-     actions.move(me, move);
+    actions.move(me, move);
   });
 
   // user forfeit
